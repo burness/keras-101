@@ -38,8 +38,6 @@ def save(model, prefix):
     model_json = model.to_json()
     with open(prefix+".json", "w") as json_file:
         json_file.write(model_json)
-    # with open(prefix+"-labels.json", "w") as json_file:
-    #     json.dump(tags, json_file)
 
 
 def load(prefix):

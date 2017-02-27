@@ -69,4 +69,4 @@ model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossent
 print "fine-tuning top 2 inception blocks alongside the top dense layers"
 train_generator = train_datagen.flow_from_directory(train_data_directory, target_size=(224,224), batch_size=64, shuffle=True)
 val_generator = test_datagen.flow_from_directory(test_data_director, target_size=(224, 224), batch_size=32, shuffle=True)
-model.fit_generator(train_generator, samples_per_epoch=200, nb_epoch=11, validation_data = val_generator)
+model.fit_generator(train_generator, samples_per_epoch=200, nb_epoch=11, validation_data = val_generator, nb_val_samples=12500)
