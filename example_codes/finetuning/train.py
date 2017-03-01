@@ -22,8 +22,9 @@ nb_phase_two_epoch = 20
 nb_classes = 2
 
 
-train_data_directory, test_data_director, model_file_prefix = sys.argv[1:]
-
+train_data_directory, test_data_directory, model_file_prefix = sys.argv[1:]
+print 'train_data_dir: {0}'.format(train_data_directory)
+print 'test data_dir: {0}'.format(test_data_directory)
 train_datagen = ImageDataGenerator(
     rescale = 1/255.,
     featurewise_center=False,
@@ -68,5 +69,6 @@ model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossent
 
 print "fine-tuning top 2 inception blocks alongside the top dense layers"
 train_generator = train_datagen.flow_from_directory(train_data_directory, target_size=(224,224), batch_size=64, shuffle=True)
-val_generator = test_datagen.flow_from_directory(test_data_director, target_size=(224, 224), batch_size=32, shuffle=True)
-model.fit_generator(train_generator, samples_per_epoch=200, nb_epoch=11, validation_data = val_generator, nb_val_samples=12500)
+val_generator = test_datagen.flow_from_directory(test_data_directory, target_size=(224, 224), batch_size=32, shuffle=True)
+model.fit_generator(train_generator, samples_per_epoch=22778, nb_epoch=11, validation_data = val_generator, nb_val_samples=12500)
+net.save(model, model_file_prefix)
