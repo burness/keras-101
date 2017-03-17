@@ -9,6 +9,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import SGD
 from keras import backend as K
 from keras.utils import np_utils
+from keras.callbacks import TensorBoard
 
 # import dataset
 import net
@@ -19,7 +20,7 @@ n = 224
 batch_size = 128
 nb_epoch = 20
 nb_phase_two_epoch = 20
-nb_classes = 2
+nb_classes = 7
 
 
 train_data_directory, test_data_directory, model_file_prefix = sys.argv[1:]
@@ -66,9 +67,10 @@ model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossent
 
 # we train our model again (this time fine-tuning the top 2 inception blocks
 # alongside the top Dense layers
-
+# add a callback with tb
+callbacks = [TensorBoard(log_dir='./logs', histogram_freq=1)]
 print "fine-tuning top 2 inception blocks alongside the top dense layers"
 train_generator = train_datagen.flow_from_directory(train_data_directory, target_size=(224,224), batch_size=64, shuffle=True)
 val_generator = test_datagen.flow_from_directory(test_data_directory, target_size=(224, 224), batch_size=32, shuffle=True)
-model.fit_generator(train_generator, samples_per_epoch=22778, nb_epoch=11, validation_data = val_generator, nb_val_samples=12500)
+model.fit_generator(train_generator, samples_per_epoch=29479, nb_epoch=100, validation_data = val_generator, nb_val_samples=3969, callbacks=callbacks)
 net.save(model, model_file_prefix)
